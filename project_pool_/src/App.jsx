@@ -1,34 +1,71 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate
+} from "react-router-dom"
+import { AuthProvider } from "./context/AuthContext"
+import { ProjectsProvider } from "./context/ProjectsContext"
+import { useToast } from "./context/ToastContext"
+import { ToastProvider } from "./context/ToastContext"
+import { ToastContainer } from "./components/ui/Toast" // juste l'affichage visuel
+import ProtectedRoute from "./components/ProtectedRoute"
+import Login from "./components/auth/Login"
+import Dashboard from "./components/dashboard/Dashboard"
+import Register from "./components/auth/Register"
+import Layout from "../src/components/layouts/Layout"
+import Projects from "./components/projects/Projects"
 
-function App() {
-  const [count, setCount] = useState(0)
+
+// Composant qui contient toutes les routes et le container de toast
+const AppContent = () => {
+  const { toasts, removeToast } = useToast()
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <Router>
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/" element={<Navigate to="/dashboard" replace />} />
+
+        {/* Routes protégées */}
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              <Layout />
+            </ProtectedRoute>
+          }
+        >
+          <Route path="dashboard" element={<Dashboard />} />
+          <Route path="projects" element={<Projects />} />
+          <Route path="team" element={
+            <div className="p-4 text-center text-secondary">Page Équipe - En développement</div>
+          } />
+          <Route path="stats" element={
+            <div className="p-4 text-center text-secondary">Page Statistiques - En développement</div>
+          } />
+          <Route path="settings" element={
+            <div className="p-4 text-center text-secondary">Page Paramètres - En développement</div>
+          } />
+        </Route>
+      </Routes>
+      <ToastContainer toasts={toasts} onClose={removeToast} />
+    </Router>
+
+  )
+}
+
+// App englobe tout avec les Providers de contexte
+function App() {
+  return (
+    <AuthProvider>
+      <ProjectsProvider>
+        <ToastProvider>
+          <AppContent />
+        </ToastProvider>
+      </ProjectsProvider>
+    </AuthProvider>
   )
 }
 
