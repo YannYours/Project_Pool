@@ -1,6 +1,21 @@
-body{
-  font-family: "Nunito", sans-serif;
+body {
+    font-family: "Nunito", sans-serif;
 }
+
 .swal-zindex {
-  z-index: 20000 !important;
+    z-index: 20000 !important;
+}
+
+@media (max-width: 768px) {
+    .header-search {
+        max-width: 100% !important;
+    }
+
+    .sidebar-overlay {
+        background-color: rgba(0, 0, 0, 0.4);
+    }
+
+    .sidebar-content {
+        width: 85vw !important;
+    }
 }

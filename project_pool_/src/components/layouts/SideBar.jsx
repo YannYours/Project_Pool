@@ -19,25 +19,26 @@ const Sidebar = ({ isOpen, onClose }) => {
             {/* Overlay sur toute la page, toutes tailles, si sidebar ouverte */}
             {isOpen && (
                 <div
-                    className="position-fixed top-0 start-0 w-100 h-100 bg-dark bg-opacity-25"
-                    style={{ zIndex: 2000 }}
+                    className="position-fixed top-0 start-0 w-100 h-100 sidebar-overlay"
                     onClick={onClose}
                 />
             )}
 
+
             {/* Sidebar unique, slide-in/out selon isOpen */}
             <div
                 className={`
-                    position-fixed top-0 start-0 h-100 bg-white shadow-lg border-end d-flex flex-column
-                    ${isOpen ? "sidebar-slide-in" : "sidebar-slide-out"}
-                `}
+    position-fixed top-0 start-0 h-100 bg-white shadow-lg border-end d-flex flex-column sidebar-content
+    ${isOpen ? "sidebar-slide-in" : "sidebar-slide-out"}
+  `}
                 style={{
-                    width: 260,
+                    width: "min(85vw, 260px)",
                     zIndex: 2050,
                     transition: "transform .3s cubic-bezier(.4,0,.2,1)",
                     transform: isOpen ? "translateX(0)" : "translateX(-100%)"
                 }}
             >
+
                 {/* Header */}
                 <div className="d-flex align-items-center justify-content-between border-bottom px-4" style={{ height: 60 }}>
                     <div className="d-flex align-items-center gap-2">

@@ -57,7 +57,7 @@ const Header = ({ onToggleSidebar }) => {
             </div>
           </button>
 
-          <div className="position-relative">
+          <div className="flex-grow-1 position-relative">
             <Search
               style={{
                 position: "absolute",
@@ -72,9 +72,10 @@ const Header = ({ onToggleSidebar }) => {
             <input
               type="text"
               placeholder="Rechercher des projets..."
-              className="form-control ps-5 pe-3"
-              style={{ width: 260, borderRadius: 8 }}
+              className="form-control ps-5 pe-3 header-search"
+              style={{ maxWidth: 260, width: "100%", borderRadius: 8 }}
             />
+
           </div>
         </div>
 
