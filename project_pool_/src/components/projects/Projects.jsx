@@ -1,11 +1,10 @@
-import React, { useState } from "react"
+import { useState, useMemo } from "react"
 import { Plus, Search, Filter } from "lucide-react"
 import { useProjects } from "../../context/ProjectsContext"
 import ProjectCard from "./ProjectCard"
 import ProjectForm from "./ProjectForm"
 import Modal from "../ui/Modal"
-import { useToast } from "../../context/ToastContext"
-
+import Swal from "sweetalert2"
 
 const Projects = () => {
     const {
@@ -13,8 +12,6 @@ const Projects = () => {
         addProject,
         updateProject,
         deleteProject,
-        searchProjects,
-        filterProjects
     } = useProjects()
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [editingProject, setEditingProject] = useState(undefined)
@@ -23,29 +20,23 @@ const Projects = () => {
     const [priorityFilter, setPriorityFilter] = useState("")
     const [isLoading, setIsLoading] = useState(false)
 
-    const { showToast } = useToast()
-
-
-    const filteredProjects = React.useMemo(() => {
-        let result = projects
+    const filteredProjects = useMemo(() => {
+        let result = projects;
 
         if (searchQuery) {
-            result = searchProjects(searchQuery)
+            result = result.filter(p => p.name.toLowerCase().includes(searchQuery.toLowerCase()));
         }
 
-        if (statusFilter || priorityFilter) {
-            result = filterProjects(statusFilter, priorityFilter)
+        if (statusFilter) {
+            result = result.filter(p => p.status === statusFilter);
         }
 
-        return result
-    }, [
-        projects,
-        searchQuery,
-        statusFilter,
-        priorityFilter,
-        searchProjects,
-        filterProjects
-    ])
+        if (priorityFilter) {
+            result = result.filter(p => p.priority === priorityFilter);
+        }
+
+        return result;
+    }, [])
 
     const handleCreateProject = () => {
         setEditingProject(undefined)
@@ -57,17 +48,34 @@ const Projects = () => {
         setIsModalOpen(true)
     }
 
-    const handleDeleteProject = id => {
-        if (window.confirm("Êtes-vous sûr de vouloir supprimer ce projet ?")) {
+    // SweetAlert2 pour suppression
+    const handleDeleteProject = async id => {
+        const result = await Swal.fire({
+            title: "Supprimer ce projet ?",
+            text: "Cette action est irréversible.",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Oui, supprimer",
+            cancelButtonText: "Annuler",
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#3085d6"
+        })
+
+        if (result.isConfirmed) {
             deleteProject(id)
-            showToast({
-                type: "success",
-                title: "Projet supprimé",
-                message: "Le projet a été supprimé avec succès"
+            await Swal.fire({
+                title: "Supprimé !",
+                text: "Le projet a été supprimé avec succès.",
+                icon: "success",
+                timer: 1500,
+                showConfirmButton: false,
+                customClass: { popup: 'swal-zindex' }
+
             })
         }
     }
 
+    // SweetAlert2 pour création/édition/erreur
     const handleSubmitProject = async projectData => {
         setIsLoading(true)
 
@@ -77,27 +85,37 @@ const Projects = () => {
         try {
             if (editingProject) {
                 updateProject(editingProject.id, projectData)
-                showToast({
-                    type: "success",
+                await Swal.fire({
+                    icon: "success",
                     title: "Projet mis à jour",
-                    message: "Le projet a été mis à jour avec succès"
+                    text: "Le projet a été mis à jour avec succès",
+                    timer: 1800,
+                    showConfirmButton: false,
+                    customClass: { popup: 'swal-zindex' }
+
                 })
             } else {
                 addProject(projectData)
-                showToast({
-                    type: "success",
+                await Swal.fire({
+                    icon: "success",
                     title: "Projet créé",
-                    message: "Le nouveau projet a été créé avec succès"
+                    text: "Le nouveau projet a été créé avec succès",
+                    timer: 1800,
+                    showConfirmButton: false,
+                    customClass: { popup: 'swal-zindex' }
+
                 })
             }
 
             setIsModalOpen(false)
             setEditingProject(undefined)
         } catch (error) {
-            showToast({
-                type: "error",
+            await Swal.fire({
+                icon: "error",
                 title: "Erreur",
-                message: "Une erreur est survenue lors de l'enregistrement"
+                text: "Une erreur est survenue lors de l'enregistrement",
+                customClass: { popup: 'swal-zindex' }
+
             })
         } finally {
             setIsLoading(false)

@@ -1,5 +1,3 @@
-import React from "react"
-
 const LoadingSpinner = ({ size = "md", className = "" }) => {
   let spinnerSize
   switch (size) {
@@ -13,7 +11,7 @@ const LoadingSpinner = ({ size = "md", className = "" }) => {
       spinnerSize = "spinner-border"
   }
 
-  // Inline style for custom size (optionnel)
+  // Style en ligne pour une taille personnalisée (optionnel)
   const style =
     size === "sm"
       ? { width: 18, height: 18 }

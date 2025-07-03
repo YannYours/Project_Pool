@@ -6,9 +6,6 @@ import {
 } from "react-router-dom"
 import { AuthProvider } from "./context/AuthContext"
 import { ProjectsProvider } from "./context/ProjectsContext"
-import { useToast } from "./context/ToastContext"
-import { ToastProvider } from "./context/ToastContext"
-import { ToastContainer } from "./components/ui/Toast" // juste l'affichage visuel
 import ProtectedRoute from "./components/ProtectedRoute"
 import Login from "./components/auth/Login"
 import Dashboard from "./components/dashboard/Dashboard"
@@ -17,9 +14,7 @@ import Layout from "../src/components/layouts/Layout"
 import Projects from "./components/projects/Projects"
 
 
-// Composant qui contient toutes les routes et le container de toast
 const AppContent = () => {
-  const { toasts, removeToast } = useToast()
 
   return (
     <Router>
@@ -50,7 +45,6 @@ const AppContent = () => {
           } />
         </Route>
       </Routes>
-      <ToastContainer toasts={toasts} onClose={removeToast} />
     </Router>
 
   )
@@ -61,9 +55,7 @@ function App() {
   return (
     <AuthProvider>
       <ProjectsProvider>
-        <ToastProvider>
           <AppContent />
-        </ToastProvider>
       </ProjectsProvider>
     </AuthProvider>
   )

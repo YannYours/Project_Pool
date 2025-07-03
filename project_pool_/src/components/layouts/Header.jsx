@@ -34,7 +34,7 @@ const Header = ({ onToggleSidebar }) => {
             aria-label="Ouvrir la navigation"
             style={{ borderRadius: 8 }}
           >
-            {/* Icon burger style */}
+            {/* Icône du style burger */}
             <div style={{ width: 24, height: 24, display: "flex", flexDirection: "column", justifyContent: "center" }}>
               <span style={{
                 display: "block",
@@ -78,7 +78,7 @@ const Header = ({ onToggleSidebar }) => {
           </div>
         </div>
 
-        {/* Notifications + User Menu */}
+        {/* Notifications + Menu utilisateur */}
         <div className="d-flex align-items-center gap-3">
           <button className="btn btn-link position-relative p-2 text-secondary" style={{ fontSize: 20 }}>
             <Bell size={20} />

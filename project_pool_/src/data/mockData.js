@@ -1,4 +1,4 @@
-export const users = [
+const defaultUsers = [
   {
     id: 1,
     firstName: "Alice",
@@ -156,8 +156,9 @@ export const users = [
     isActive: true
   }
 ]
+export let users = JSON.parse(localStorage.getItem("users") || "null") || defaultUsers;
 
-export const projects = [
+const defaultProjects = [
   {
     id: 1,
     name: "Site e-commerce ModernShop",
@@ -461,18 +462,28 @@ export const projects = [
   }
 ]
 
+export let projects = JSON.parse(localStorage.getItem("projects") || "null") || defaultProjects;
+
+
 export const dashboardStats = {
-  totalProjects: 20,
-  activeProjects: 12,
-  completedProjects: 6,
-  pausedProjects: 1,
-  cancelledProjects: 1,
-  totalUsers: 12,
-  totalBudget: 650000,
-  thisMonthProjects: 3
+  totalProjects: projects.length,
+  activeProjects: projects.filter(p => p.status === "active").length,
+  completedProjects: projects.filter(p => p.status === "completed").length,
+  pausedProjects: projects.filter(p => p.status === "paused").length,
+  cancelledProjects: projects.filter(p => p.status === "cancelled").length,
+  totalUsers: users.length,
+  totalBudget: projects.reduce((acc, p) => acc + (p.budget || 0), 0),
+  thisMonthProjects: projects.filter(p => {
+    const d = new Date();
+    const created = new Date(p.createdAt);
+    return (
+      created.getFullYear() === d.getFullYear() &&
+      created.getMonth() === d.getMonth()
+    );
+  }).length
 }
 
-export let currentUser = null
+export let currentUser = null;
 
 export const authUser = (email, password) => {
   const user = users.find(u => u.email === email && u.password === password)
@@ -500,8 +511,37 @@ export const registerUser = userData => {
   }
 
   users.push(newUser)
+  localStorage.setItem("users", JSON.stringify(users)) // Sauvegarde persistante
   return { success: true, user: newUser }
 }
+
+export const addProject = (projectData) => {
+  const newProject = {
+    ...projectData,
+    id: projects.length ? Math.max(...projects.map(p => p.id)) + 1 : 1,
+    createdAt: new Date().toISOString().split("T")[0],
+  };
+  projects.push(newProject);
+  localStorage.setItem("projects", JSON.stringify(projects));
+  return newProject;
+};
+
+export const updateProject = (id, newData) => {
+  const index = projects.findIndex(p => p.id === id);
+  if (index !== -1) {
+    projects[index] = { ...projects[index], ...newData };
+    localStorage.setItem("projects", JSON.stringify(projects));
+    return projects[index];
+  }
+  return null;
+};
+
+// Supprimer un projet
+export const deleteProject = (id) => {
+  projects = projects.filter(p => p.id !== id);
+  localStorage.setItem("projects", JSON.stringify(projects));
+};
+
 
 export const logoutUser = () => {
   currentUser = null
@@ -511,12 +551,14 @@ export const logoutUser = () => {
 
 export const getCurrentUser = () => {
   if (currentUser) return currentUser
-
   const savedUser = localStorage.getItem("currentUser")
   if (savedUser) {
     currentUser = JSON.parse(savedUser)
     return currentUser
   }
-
   return null
 }
+
+// ---------- UTILS POUR LISTER TOUS LES USERS/PROJETS ----------
+export const getAllUsers = () => JSON.parse(localStorage.getItem("users") || "[]")
+export const getAllProjects = () => JSON.parse(localStorage.getItem("projects") || "[]")

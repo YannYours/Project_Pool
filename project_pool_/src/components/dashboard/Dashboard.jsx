@@ -1,4 +1,3 @@
-import React from "react"
 import {
   FolderOpen,
   CheckCircle,
@@ -10,12 +9,80 @@ import StatCard from "./StatCard"
 import RecentProjects from "./RecentProjects"
 import ProjectChart from "./ProjectChart"
 import { useProjects } from "../../context/ProjectsContext"
-//import { useToast } from "../../context/ToastContext"
+import Modal from "../ui/Modal"
+import ProjectForm from "../projects/ProjectForm"
 import { dashboardStats } from "../../data/mockData"
+import { useState } from "react"
+import Swal from "sweetalert2"
+
 
 const Dashboard = () => {
-  const { projects } = useProjects()
+  const {
+    projects,
+    addProject,
+    updateProject,
+  } = useProjects()
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const [editingProject, setEditingProject] = useState(undefined)
 
+  const handleCreateProject = () => {
+    setEditingProject(undefined)
+    setIsModalOpen(true)
+  }
+
+  const handleSubmitProject = async projectData => {
+    setIsLoading(true)
+
+    // Simuler le retard de l'API
+    await new Promise(resolve => setTimeout(resolve, 1000))
+
+    try {
+      if (editingProject) {
+        updateProject(editingProject.id, projectData)
+        await Swal.fire({
+          icon: "success",
+          title: "Projet mis à jour",
+          text: "Le projet a été mis à jour avec succès",
+          timer: 1800,
+          showConfirmButton: false,
+          customClass: { popup: 'swal-zindex' }
+
+        })
+      } else {
+        addProject(projectData)
+        await Swal.fire({
+          icon: "success",
+          title: "Projet créé",
+          text: "Le nouveau projet a été créé avec succès",
+          timer: 1800,
+          showConfirmButton: false,
+          customClass: { popup: 'swal-zindex' }
+
+        })
+      }
+
+      setIsModalOpen(false)
+      setEditingProject(undefined)
+    } catch (error) {
+      await Swal.fire({
+        icon: "error",
+        title: "Erreur",
+        text: "Une erreur est survenue lors de l'enregistrement",
+        customClass: { popup: 'swal-zindex' }
+
+      })
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const handleCloseModal = () => {
+    if (!isLoading) {
+      setIsModalOpen(false)
+      setEditingProject(undefined)
+    }
+  }
 
   const stats = [
     {
@@ -63,13 +130,13 @@ const Dashboard = () => {
           </div>
         </div>
         <div>
-          <button className="btn btn-primary fw-semibold shadow-sm" >
+          <button className="btn btn-primary fw-semibold shadow-sm" onClick={handleCreateProject}>
             Nouveau projet
           </button>
         </div>
       </div>
 
-      {/* Stats Grid */}
+      {/* Statistiques Grid */}
       <div className="row g-3 mb-4">
         {stats.map((stat, index) => (
           <div key={index} className="col-12 col-md-6 col-lg-3">
@@ -83,13 +150,13 @@ const Dashboard = () => {
         <ProjectChart />
       </div>
 
-      {/* Recent Projects + Quick Actions */}
+      {/* Projets récents + actions rapides */}
       <div className="row g-3">
         <div className="col-12 col-lg-8">
           <RecentProjects />
         </div>
 
-        {/* Quick Actions */}
+        {/* Actions Rapides */}
         <div className="col-12 col-lg-4">
           <div className="card shadow-sm border">
             <div className="card-body">
@@ -123,6 +190,19 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
+      <Modal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        title={editingProject ? "Modifier le projet" : "Nouveau projet"}
+        size="xl"
+      >
+        <ProjectForm
+          project={editingProject}
+          onSubmit={handleSubmitProject}
+          onCancel={handleCloseModal}
+          isLoading={isLoading}
+        />
+      </Modal>
     </div>
   )
 }

@@ -1,0 +1,6 @@
+body{
+  font-family: "Nunito", sans-serif;
+}
+.swal-zindex {
+  z-index: 20000 !important;
+}

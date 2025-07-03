@@ -14,7 +14,7 @@ const RecentProjects = () => {
         )
         .slice(0, 5)
 
-    // Bootstrap badge color for status
+    // Couleur du badge Bootstrap pour le statut
     const getStatusClass = status => {
         switch (status) {
             case "active":
@@ -30,7 +30,7 @@ const RecentProjects = () => {
         }
     }
 
-    // Bootstrap color for priority dot
+    // Couleur de base pour le point de priorité
     const getPriorityBg = priority => {
         switch (priority) {
             case "critical":

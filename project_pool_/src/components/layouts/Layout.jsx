@@ -11,15 +11,15 @@ const Layout = () => {
 
   return (
     <div className="min-vh-100 bg-light d-flex">
-      {/* Sidebar (responsive) */}
+      {/* Sidebar (responsif) */}
       <Sidebar isOpen={sidebarOpen} onClose={closeSidebar} />
 
-      {/* Main content area */}
+      {/* Surface contenu principal */}
       <div className="flex-grow-1" style={{ minWidth: 0 }}>
         {/* Header toujours visible */}
         <Header onToggleSidebar={toggleSidebar} />
 
-        {/* Main content */}
+        {/* Contenu principal */}
         <main className="py-4">
           <div className="container-xl">
             <Outlet />

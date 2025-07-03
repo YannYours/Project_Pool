@@ -18,7 +18,6 @@ const Modal = ({ isOpen, onClose, title, children, size = "md" }) => {
 
     if (!isOpen) return null
 
-    // Bootstrap modal sizes
     const getSizeClass = () => {
         switch (size) {
             case "sm":
@@ -36,7 +35,7 @@ const Modal = ({ isOpen, onClose, title, children, size = "md" }) => {
         <div
             className="modal fade show"
             tabIndex="-1"
-            style={{ display: "block", background: "rgba(33, 37, 41, 0.4)" /* bg-dark bg-opacity-40 */, zIndex: 9999 }}
+            style={{ display: "block", background: "rgba(33, 37, 41, 0.4)" , zIndex: 100 }}
             aria-modal="true"
             role="dialog"
             onClick={onClose}
@@ -56,7 +55,7 @@ const Modal = ({ isOpen, onClose, title, children, size = "md" }) => {
                             onClick={onClose}
                             style={{ fontSize: 18 }}
                         >
-                            {/* Optionnel : <X size={20} /> */}
+                           <X size={20} /> 
                         </button>
                     </div>
                     <div className="modal-body pt-0">{children}</div>

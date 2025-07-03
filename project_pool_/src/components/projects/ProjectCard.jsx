@@ -1,12 +1,11 @@
-import React from "react"
-import { Calendar, Users, DollarSign, MoreHorizontal } from "lucide-react"
+import { Calendar, Users, MoreHorizontal } from "lucide-react"
 import { useProjects } from "../../context/ProjectsContext"
 
 const ProjectCard = ({ project, onEdit, onDelete }) => {
   const { getUsersByIds } = useProjects()
   const assignedUsers = getUsersByIds(project.assignedUsers)
 
-  // Bootstrap badge color for status
+  // Couleur du badge Bootstrap pour le statut
   const getStatusClass = status => {
     switch (status) {
       case "active":
@@ -22,7 +21,7 @@ const ProjectCard = ({ project, onEdit, onDelete }) => {
     }
   }
 
-  // Bootstrap bg color for priority dot
+  // Couleur bg de Bootstrap pour le point de priorité
   const getPriorityBg = priority => {
     switch (priority) {
       case "critical":
@@ -116,7 +115,6 @@ const ProjectCard = ({ project, onEdit, onDelete }) => {
               <span>{project.assignedUsers.length} membres</span>
             </div>
             <div className="d-flex align-items-center gap-1 text-secondary">
-              <DollarSign size={16} />
               <span>{project.budget.toLocaleString("fr-FR")} XOF</span>
             </div>
           </div>
@@ -140,7 +138,7 @@ const ProjectCard = ({ project, onEdit, onDelete }) => {
           </div>
         </div>
 
-        {/* Members + Actions */}
+        {/* Membres + Actions */}
         <div className="d-flex align-items-center justify-content-between">
           <div className="d-flex" style={{ marginLeft: -8 }}>
             {assignedUsers.slice(0, 4).map(user => (

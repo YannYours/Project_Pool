@@ -15,7 +15,10 @@ export function useProjects() {
 
 // Provider du contexte
 export function ProjectsProvider({ children }) {
-  const [projects, setProjects] = useState(initialProjects)
+  const [projects, setProjects] = useState(() => {
+    const saved = localStorage.getItem("projects");
+    return saved ? JSON.parse(saved) : initialProjects;
+  });
 
   // Ajouter un projet
   const addProject = projectData => {
@@ -24,22 +27,27 @@ export function ProjectsProvider({ children }) {
       id: projects.length ? Math.max(...projects.map(p => p.id)) + 1 : 1,
       createdAt: new Date().toISOString().split("T")[0]
     }
-    setProjects([...projects, newProject])
+    const updatedProjects = [...projects, newProject]
+    setProjects(updatedProjects)
+    localStorage.setItem("projects", JSON.stringify(updatedProjects))
   }
 
   // Modifier un projet
   function updateProject(id, updates) {
-    setProjects(
-      projects.map(project =>
-        project.id === id ? { ...project, ...updates } : project
-      )
+    const updatedProjects = projects.map(project =>
+      project.id === id ? { ...project, ...updates } : project
     )
+    setProjects(updatedProjects)
+    localStorage.setItem("projects", JSON.stringify(updatedProjects))
   }
 
   // Supprimer un projet
   function deleteProject(id) {
-    setProjects(projects.filter(project => project.id !== id))
+    const updatedProjects = projects.filter(project => project.id !== id)
+    setProjects(updatedProjects)
+    localStorage.setItem("projects", JSON.stringify(updatedProjects))
   }
+
 
   // Obtenir un projet par ID
   function getProjectById(id) {

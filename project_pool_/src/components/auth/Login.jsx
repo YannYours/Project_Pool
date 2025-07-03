@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Eye, EyeOff, Mail, Lock, FolderOpen } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import LoadingSpinner from '../ui/LoadingSpinner';
+import Swal from 'sweetalert2';
 
 export default function Login() {
     const [formData, setFormData] = useState({
@@ -31,6 +32,20 @@ export default function Login() {
         } else if (formData.password.length < 6) {
             newErrors.password = 'Le mot de passe doit contenir au moins 6 caractères';
         }
+        // Option sécurité (mot de passe trop simple)
+        else if (
+            ["123456", "password", "motdepasse", "azerty", "qwerty"].includes(formData.password.trim().toLowerCase())
+        ) {
+            newErrors.password = "Le mot de passe est trop simple pour être sécurisé";
+            // Option: Alert immédiate
+            Swal.fire({
+                icon: 'warning',
+                title: 'Sécurité',
+                text: "Le mot de passe choisi est trop simple !",
+                confirmButtonText: 'OK',
+                customClass: { popup: 'swal-zindex' }
+            });
+        }
 
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
@@ -46,8 +61,25 @@ export default function Login() {
         setIsLoading(false);
 
         if (result.success) {
-            navigate('/dashboard');
+            Swal.fire({
+                icon: 'success',
+                title: 'Connexion réussie',
+                text: 'venue sur ProjectPool !',
+                timer: 1200,
+                showConfirmButton: false,
+                customClass: { popup: 'swal-zindex' }
+
+            });
+            setTimeout(() => navigate('/dashboard'), 2200); // Laisse l'alerte visible
         } else {
+            // Affiche SweetAlert2
+            Swal.fire({
+                icon: 'error',
+                title: 'Erreur de connexion',
+                text: result.message || 'Vérifiez vos identifiants et réessayez.',
+                customClass: { popup: 'swal-zindex' }
+
+            });
             setErrors({ general: result.message || 'Erreur de connexion' });
         }
     };
@@ -59,7 +91,6 @@ export default function Login() {
             [name]: type === 'checkbox' ? checked : value
         }));
 
-        // Clear error when user starts typing
         if (errors[name]) {
             setErrors(prev => ({ ...prev, [name]: '' }));
         }
@@ -77,6 +108,7 @@ export default function Login() {
                         <p className="text-muted small mb-0">Accédez à votre espace de gestion de projets</p>
                     </div>
                     <form className="mt-3" onSubmit={handleSubmit}>
+                        {/* On peut garder l'affichage classique d'erreur en plus de SweetAlert */}
                         {errors.general && (
                             <div className="alert alert-danger py-2">{errors.general}</div>
                         )}

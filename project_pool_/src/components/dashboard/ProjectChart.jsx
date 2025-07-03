@@ -1,4 +1,3 @@
-import React from "react"
 import {
   BarChart,
   Bar,
@@ -17,7 +16,7 @@ import { useProjects } from "../../context/ProjectsContext"
 const ProjectChart = () => {
   const { projects } = useProjects()
 
-  // Data for status distribution (Pie Chart)
+  // Données relatives à la répartition des statuts (diagramme circulaire)
   const statusData = [
     {
       name: "Actifs",
@@ -41,7 +40,7 @@ const ProjectChart = () => {
     }
   ]
 
-  // Data for monthly projects (Bar Chart)
+  // Données pour les projets mensuels (diagramme à barres)
   const monthlyData = [
     { month: "Jan", projects: 2 },
     { month: "Feb", projects: 4 },
@@ -53,7 +52,7 @@ const ProjectChart = () => {
 
   return (
     <div className="row g-3">
-      {/* Status Distribution Pie Chart */}
+      {/* Diagramme à secteurs de la répartition des statuts */}
       <div className="col-12 col-lg-6">
         <div className="card border shadow-sm h-100">
           <div className="card-body">
@@ -84,7 +83,7 @@ const ProjectChart = () => {
         </div>
       </div>
 
-      {/* Monthly Projects Bar Chart */}
+      {/* Diagramme à barres des projets mensuels */}
       <div className="col-12 col-lg-6">
         <div className="card border shadow-sm h-100">
           <div className="card-body">

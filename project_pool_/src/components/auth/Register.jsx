@@ -11,6 +11,7 @@ import {
 } from "lucide-react"
 import { useAuth } from "../../context/AuthContext"
 import LoadingSpinner from "../ui/LoadingSpinner"
+import Swal from "sweetalert2"
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -99,6 +100,20 @@ const Register = () => {
       newErrors.password = "Le mot de passe est requis"
     } else if (formData.password.length < 6) {
       newErrors.password = "Le mot de passe doit contenir au moins 6 caractères"
+    } else if (
+      ["123456", "password", "motdepasse", "azerty", "qwerty"].includes(
+        formData.password.trim().toLowerCase()
+      )
+    ) {
+      newErrors.password = "Le mot de passe est trop simple pour être sécurisé"
+      Swal.fire({
+        icon: "warning",
+        title: "Sécurité",
+        text: "Le mot de passe choisi est trop simple !",
+        confirmButtonText: "OK",
+        customClass: { popup: 'swal-zindex' }
+
+      })
     }
 
     if (!formData.confirmPassword) {
@@ -136,8 +151,26 @@ const Register = () => {
     setIsLoading(false)
 
     if (result.success) {
+      // SweetAlert2 success et redirection
+      await Swal.fire({
+        icon: "success",
+        title: "Compte créé !",
+        text: "Votre compte a été créé avec succès. Vous pouvez maintenant vous connecter.",
+        timer: 2000,
+        showConfirmButton: false,
+        customClass: { popup: 'swal-zindex' }
+
+      })
       navigate("/login")
     } else {
+      // Erreur SweetAlert2 
+      await Swal.fire({
+        icon: "error",
+        title: "Erreur lors de l'inscription",
+        text: result.message || "Une erreur est survenue, veuillez réessayer.",
+        customClass: { popup: 'swal-zindex' }
+
+      })
       setErrors({ general: result.message || "Erreur lors de l'inscription" })
     }
   }
@@ -151,7 +184,7 @@ const Register = () => {
       [name]: type === "checkbox" ? checked : value
     }))
 
-    // Clear error when user starts typing
+    // Effacer l'erreur lorsque l'utilisateur commence à taper
     if (errors[name]) {
       setErrors(prev => ({ ...prev, [name]: "" }))
     }
