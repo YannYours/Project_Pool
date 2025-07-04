@@ -55,7 +55,6 @@ const Modal = ({ isOpen, onClose, title, children, size = "md" }) => {
                             onClick={onClose}
                             style={{ fontSize: 18 }}
                         >
-                           <X size={20} /> 
                         </button>
                     </div>
                     <div className="modal-body pt-0">{children}</div>
