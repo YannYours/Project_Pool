@@ -46,7 +46,7 @@ const ProjectForm = ({ project, onSubmit, onCancel, isLoading = false }) => {
         const newErrors = {}
 
         if (!formData.name.trim()) {
-            newErrors.name = "Le nom du projet est requis"
+            newErrors.name = "Le nom du projet est requis (obligatoire)"
         }
 
         if (!formData.description.trim()) {
