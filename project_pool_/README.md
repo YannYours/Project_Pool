@@ -79,6 +79,7 @@ Icônes : Lucide React
 ```bash
 # 1. Clone le repo
 git clone https://github.com/YannYours/Project_Pool.git
+(S'il est est cloné dans un dossier existant faire d'abord => cd Project_Pool)
 
 cd project_pool_
 
