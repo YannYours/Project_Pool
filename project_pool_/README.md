@@ -95,4 +95,4 @@ Avoir au préalable une version récente de Node JS installé (v23.11.1 pour ce 
 
 ## 🌐 Démo en ligne
 
-Lien => https://project-pool-tau.vercel.app/
+Lien => https://project-pool-psi.vercel.app/
