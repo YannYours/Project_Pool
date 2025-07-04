@@ -48,6 +48,8 @@ const Dashboard = () => {
           showConfirmButton: false,
           customClass: { popup: 'swal-zindex' }
 
+        }).then(() => {
+          location.reload()
         })
       } else {
         addProject(projectData)
@@ -59,6 +61,8 @@ const Dashboard = () => {
           showConfirmButton: false,
           customClass: { popup: 'swal-zindex' }
 
+        }).then(() => {
+          location.reload()
         })
       }
 

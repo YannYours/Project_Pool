@@ -52,12 +52,12 @@ Palette de couleurs cohérente, mode sombre (bonus)
 
 ## Screenshots
 
-![Page d'inscription](/src/assets/screen1.png)
-![Page de connexion](/src/assets/screen2.png)
-![Modal modification projet](/src/assets/screen3.png)
-![Toast suppression projet](/src/assets/screen4.png)
-![Page des projets](/src/assets/screen5.png)
-![Dashboard](/src/assets/screen6.png)
+![Page d'inscription](./src/assets/screen1.png)
+![Page de connexion](./src/assets/screen2.png)
+![Modal modification projet](./src/assets/screen3.png)
+![Toast suppression projet](./src/assets/screen4.png)
+![Page des projets](./src/assets/screen5.png)
+![Dashboard](./src/assets/screen6.png)
 
 
 ## 🏗️ Stack technique
@@ -79,6 +79,7 @@ Icônes : Lucide React
 ```bash
 # 1. Clone le repo
 git clone https://github.com/YannYours/Project_Pool.git
+(S'il est est cloné dans un dossier existant faire d'abord => cd Project_Pool)
 
 cd project_pool_
 
@@ -94,4 +95,4 @@ Avoir au préalable une version récente de Node JS installé (v23.11.1 pour ce 
 
 ## 🌐 Démo en ligne
 
-Lien => 
+Lien => https://project-pool-tau.vercel.app/

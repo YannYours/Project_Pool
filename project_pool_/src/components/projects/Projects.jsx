@@ -36,7 +36,7 @@ const Projects = () => {
         }
 
         return result;
-    }, [])
+    }, [projects, searchQuery, statusFilter, priorityFilter])
 
     const handleCreateProject = () => {
         setEditingProject(undefined)
@@ -71,6 +71,8 @@ const Projects = () => {
                 showConfirmButton: false,
                 customClass: { popup: 'swal-zindex' }
 
+            }).then(() => {
+                location.reload()
             })
         }
     }
@@ -93,6 +95,8 @@ const Projects = () => {
                     showConfirmButton: false,
                     customClass: { popup: 'swal-zindex' }
 
+                }).then(() => {
+                    location.reload()
                 })
             } else {
                 addProject(projectData)
@@ -104,6 +108,8 @@ const Projects = () => {
                     showConfirmButton: false,
                     customClass: { popup: 'swal-zindex' }
 
+                }).then(() => {
+                    location.reload()
                 })
             }
 
